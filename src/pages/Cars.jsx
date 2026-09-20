@@ -1,4 +1,5 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 
 const cars = [
   {
@@ -44,20 +45,75 @@ const cars = [
 ];
 
 function Cars() {
+  const navigate = useNavigate();
+
+  function logout() {
+    localStorage.removeItem("token");
+    navigate("/login");
+  }
+
   return (
     <div
       style={{
         minHeight: "100vh",
         backgroundColor: "#f5f6f8",
-        padding: "40px",
+        padding: "30px 40px",
       }}
     >
+      {/* Header */}
+      <header
+        style={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          marginBottom: "35px",
+        }}
+      >
+        <div>
+          <div
+            style={{
+              fontSize: "24px",
+              fontWeight: "bold",
+            }}
+          >
+            🚗 Lightning Cars
+          </div>
+
+          <p
+            style={{
+              color: "#666",
+              margin: "5px 0 0",
+            }}
+          >
+            Find your perfect rental car
+          </p>
+        </div>
+
+        {/* Logout button */}
+        <button
+          onClick={logout}
+          style={{
+            padding: "10px 18px",
+            border: "1px solid #ddd",
+            borderRadius: "6px",
+            backgroundColor: "#fff",
+            color: "#333",
+            cursor: "pointer",
+            fontWeight: "500",
+          }}
+        >
+          Logout
+        </button>
+      </header>
+
+      {/* Page title */}
       <h1 style={{ marginBottom: "8px" }}>Available Cars</h1>
 
       <p style={{ color: "#666", marginBottom: "30px" }}>
         Choose a car for your journey
       </p>
 
+      {/* Cars */}
       <div
         style={{
           display: "grid",
