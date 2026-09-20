@@ -10,9 +10,9 @@ const cars = [
     transmission: "Automatic",
     price: 2500,
     images: [
-      "https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?auto=format&fit=crop&w=800&q=80",
-      "https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=800&q=80",
-      "https://images.unsplash.com/photo-1542362567-b07e54358753?auto=format&fit=crop&w=800&q=80",
+      "https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1542362567-b07e54358753?auto=format&fit=crop&w=1200&q=80",
     ],
   },
   {
@@ -23,9 +23,9 @@ const cars = [
     transmission: "Automatic",
     price: 1800,
     images: [
-      "https://images.unsplash.com/photo-1606664515524-ed2f786a0bd6?auto=format&fit=crop&w=800&q=80",
-      "https://images.unsplash.com/photo-1553440569-bcc63803a83d?auto=format&fit=crop&w=800&q=80",
-      "https://images.unsplash.com/photo-1619767886558-efdc259cde1a?auto=format&fit=crop&w=800&q=80",
+      "https://images.unsplash.com/photo-1606664515524-ed2f786a0bd6?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1553440569-bcc63803a83d?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1619767886558-efdc259cde1a?auto=format&fit=crop&w=1200&q=80",
     ],
   },
   {
@@ -36,9 +36,9 @@ const cars = [
     transmission: "Manual",
     price: 1200,
     images: [
-      "https://images.unsplash.com/photo-1494976388531-d1058494cdd8?auto=format&fit=crop&w=800&q=80",
-      "https://images.unsplash.com/photo-1502877338535-766e1452684a?auto=format&fit=crop&w=800&q=80",
-      "https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?auto=format&fit=crop&w=800&q=80",
+      "https://images.unsplash.com/photo-1494976388531-d1058494cdd8?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1502877338535-766e1452684a?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?auto=format&fit=crop&w=1200&q=80",
     ],
   },
   {
@@ -49,139 +49,179 @@ const cars = [
     transmission: "Automatic",
     price: 2800,
     images: [
-      "https://images.unsplash.com/photo-1606664515524-ed2f786a0bd6?auto=format&fit=crop&w=800&q=80",
-      "https://images.unsplash.com/photo-1542362567-b07e54358753?auto=format&fit=crop&w=800&q=80",
-      "https://images.unsplash.com/photo-1553440569-bcc63803a83d?auto=format&fit=crop&w=800&q=80",
+      "https://images.unsplash.com/photo-1606664515524-ed2f786a0bd6?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1542362567-b07e54358753?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1553440569-bcc63803a83d?auto=format&fit=crop&w=1200&q=80",
     ],
   },
 ];
 
 function CarCard({ car }) {
+  const navigate = useNavigate();
+
   const [currentImage, setCurrentImage] = useState(0);
 
-  // Automatically change image every 3 seconds
   useEffect(() => {
     const interval = setInterval(() => {
-      setCurrentImage((previous) =>
-        previous === car.images.length - 1 ? 0 : previous + 1
-      );
-    }, 10000);
+      setCurrentImage((previous) => {
+        if (previous === car.images.length - 1) {
+          return 0;
+        }
+
+        return previous + 1;
+      });
+    }, 3000);
 
     return () => clearInterval(interval);
   }, [car.images.length]);
 
   function nextImage() {
-    setCurrentImage((previous) =>
-      previous === car.images.length - 1 ? 0 : previous + 1
-    );
+    setCurrentImage((previous) => {
+      if (previous === car.images.length - 1) {
+        return 0;
+      }
+
+      return previous + 1;
+    });
   }
 
   function previousImage() {
-    setCurrentImage((previous) =>
-      previous === 0 ? car.images.length - 1 : previous - 1
-    );
+    setCurrentImage((previous) => {
+      if (previous === 0) {
+        return car.images.length - 1;
+      }
+
+      return previous - 1;
+    });
+  }
+
+  function bookCar() {
+    navigate("/login");
   }
 
   return (
     <div
       style={{
-        backgroundColor: "#fff",
-        borderRadius: "12px",
+        backgroundColor: "#ffffff",
+        borderRadius: "14px",
         overflow: "hidden",
-        boxShadow: "0 4px 15px rgba(0, 0, 0, 0.08)",
+        boxShadow: "0 5px 20px rgba(0,0,0,0.08)",
+        transition: "transform 0.2s ease",
       }}
     >
-      {/* Image Slider */}
+      {/* ================= IMAGE SLIDER ================= */}
+
       <div
         style={{
           position: "relative",
           width: "100%",
-          height: "220px",
+          height: "230px",
           overflow: "hidden",
+          backgroundColor: "#eee",
         }}
       >
         <img
           src={car.images[currentImage]}
-          alt={`${car.name} ${currentImage + 1}`}
+          alt={car.name}
           style={{
             width: "100%",
             height: "100%",
             objectFit: "cover",
             display: "block",
-            transition: "opacity 0.5s ease",
           }}
         />
 
-        {/* Previous Arrow */}
+        {/* Previous Button */}
+
         <button
           type="button"
           onClick={previousImage}
           aria-label="Previous image"
           style={{
             position: "absolute",
-            left: "10px",
+            left: "12px",
             top: "50%",
             transform: "translateY(-50%)",
-            width: "36px",
-            height: "36px",
-            borderRadius: "50%",
+
+            width: "38px",
+            height: "38px",
+
+            padding: 0,
+            margin: 0,
+
             border: "none",
-            backgroundColor: "rgba(0, 0, 0, 0.55)",
-            color: "#fff",
-            fontSize: "24px",
-            cursor: "pointer",
+            borderRadius: "50%",
+
+            backgroundColor: "rgba(0,0,0,0.55)",
+            color: "#ffffff",
+
+            fontSize: "27px",
+            lineHeight: "1",
+
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
-            padding: 0,
-            margin: 0,
-            lineHeight: 1,
-            zIndex: 2,
+
+            cursor: "pointer",
+
+            zIndex: 5,
           }}
         >
           ‹
         </button>
 
-        {/* Next Arrow */}
+        {/* Next Button */}
+
         <button
           type="button"
           onClick={nextImage}
           aria-label="Next image"
           style={{
             position: "absolute",
-            right: "10px",
+            right: "12px",
             top: "50%",
             transform: "translateY(-50%)",
-            width: "36px",
-            height: "36px",
-            borderRadius: "50%",
+
+            width: "38px",
+            height: "38px",
+
+            padding: 0,
+            margin: 0,
+
             border: "none",
-            backgroundColor: "rgba(0, 0, 0, 0.55)",
-            color: "#fff",
-            fontSize: "24px",
-            cursor: "pointer",
+            borderRadius: "50%",
+
+            backgroundColor: "rgba(0,0,0,0.55)",
+            color: "#ffffff",
+
+            fontSize: "27px",
+            lineHeight: "1",
+
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
-            padding: 0,
-            margin: 0,
-            lineHeight: 1,
-            zIndex: 2,
+
+            cursor: "pointer",
+
+            zIndex: 5,
           }}
         >
           ›
         </button>
 
         {/* Image Dots */}
+
         <div
           style={{
             position: "absolute",
-            bottom: "10px",
+            bottom: "12px",
             left: "50%",
             transform: "translateX(-50%)",
+
             display: "flex",
-            gap: "6px",
-            zIndex: 2,
+            gap: "7px",
+
+            zIndex: 5,
           }}
         >
           {car.images.map((_, index) => (
@@ -191,29 +231,41 @@ function CarCard({ car }) {
               onClick={() => setCurrentImage(index)}
               aria-label={`Show image ${index + 1}`}
               style={{
-                width: "8px",
+                width: currentImage === index ? "20px" : "8px",
                 height: "8px",
+
                 padding: 0,
                 margin: 0,
+
                 border: "none",
-                borderRadius: "50%",
+                borderRadius: "10px",
+
                 backgroundColor:
                   currentImage === index
-                    ? "#fff"
-                    : "rgba(255, 255, 255, 0.5)",
+                    ? "#ffffff"
+                    : "rgba(255,255,255,0.6)",
+
                 cursor: "pointer",
+
+                transition: "all 0.2s ease",
               }}
             />
           ))}
         </div>
       </div>
 
-      {/* Car Details */}
-      <div style={{ padding: "20px" }}>
+      {/* ================= CAR DETAILS ================= */}
+
+      <div
+        style={{
+          padding: "20px",
+        }}
+      >
         <h2
           style={{
-            margin: "0 0 10px 0",
+            margin: "0 0 10px",
             fontSize: "21px",
+            color: "#111111",
           }}
         >
           {car.name}
@@ -221,8 +273,9 @@ function CarCard({ car }) {
 
         <p
           style={{
-            color: "#666",
-            margin: 0,
+            margin: "0",
+            color: "#666666",
+            fontSize: "14px",
           }}
         >
           {car.type} • {car.seats} Seats • {car.transmission}
@@ -233,39 +286,49 @@ function CarCard({ car }) {
             display: "flex",
             justifyContent: "space-between",
             alignItems: "center",
-            marginTop: "20px",
+            marginTop: "22px",
           }}
         >
+          {/* Price */}
+
           <div>
-            <strong
+            <span
               style={{
-                fontSize: "22px",
+                fontSize: "23px",
+                fontWeight: "700",
+                color: "#111111",
               }}
             >
               ₹{car.price}
-            </strong>
+            </span>
 
             <span
               style={{
-                color: "#777",
-                marginLeft: "4px",
+                marginLeft: "5px",
+                color: "#777777",
+                fontSize: "14px",
               }}
             >
               / day
             </span>
           </div>
 
+          {/* Book */}
+
           <button
             type="button"
-            onClick={() => alert(`Selected ${car.name}`)}
+            onClick={bookCar}
             style={{
-              padding: "10px 18px",
+              padding: "11px 18px",
               border: "none",
-              borderRadius: "6px",
-              backgroundColor: "#111",
-              color: "#fff",
+              borderRadius: "7px",
+
+              backgroundColor: "#111111",
+              color: "#ffffff",
+
               cursor: "pointer",
-              fontWeight: "500",
+              fontSize: "14px",
+              fontWeight: "600",
             }}
           >
             Book Now
@@ -279,8 +342,7 @@ function CarCard({ car }) {
 function Cars() {
   const navigate = useNavigate();
 
-  function logout() {
-    localStorage.removeItem("token");
+  function goToLogin() {
     navigate("/login");
   }
 
@@ -293,20 +355,24 @@ function Cars() {
         boxSizing: "border-box",
       }}
     >
-      {/* Header */}
+      {/* ================= HEADER ================= */}
+
       <header
         style={{
           display: "flex",
           justifyContent: "space-between",
           alignItems: "center",
-          marginBottom: "35px",
+          marginBottom: "40px",
         }}
       >
+        {/* Logo */}
+
         <div>
           <div
             style={{
-              fontSize: "24px",
-              fontWeight: "bold",
+              fontSize: "26px",
+              fontWeight: "700",
+              color: "#111111",
             }}
           >
             🚗 Lightning Cars
@@ -314,56 +380,75 @@ function Cars() {
 
           <p
             style={{
-              color: "#666",
-              margin: "5px 0 0",
+              margin: "6px 0 0",
+              color: "#666666",
+              fontSize: "14px",
             }}
           >
             Find your perfect rental car
           </p>
         </div>
 
-        {/* Logout */}
+        {/* Login */}
+
         <button
           type="button"
-          onClick={logout}
+          onClick={goToLogin}
           style={{
-            padding: "10px 18px",
-            border: "1px solid #ddd",
-            borderRadius: "6px",
-            backgroundColor: "#fff",
-            color: "#333",
+            padding: "11px 24px",
+
+            border: "none",
+            borderRadius: "7px",
+
+            backgroundColor: "#111111",
+            color: "#ffffff",
+
+            fontSize: "15px",
+            fontWeight: "600",
+
             cursor: "pointer",
-            fontWeight: "500",
           }}
         >
-          Logout
+          Login
         </button>
       </header>
 
-      {/* Page Title */}
-      <h1
+      {/* ================= PAGE TITLE ================= */}
+
+      <div
         style={{
-          margin: "0 0 8px",
+          marginBottom: "30px",
         }}
       >
-        Available Cars
-      </h1>
+        <h1
+          style={{
+            margin: "0 0 8px",
+            fontSize: "30px",
+            color: "#111111",
+          }}
+        >
+          Available Cars
+        </h1>
 
-      <p
-        style={{
-          color: "#666",
-          margin: "0 0 30px",
-        }}
-      >
-        Choose a car for your journey
-      </p>
+        <p
+          style={{
+            margin: 0,
+            color: "#666666",
+          }}
+        >
+          Choose a car for your journey
+        </p>
+      </div>
 
-      {/* Car Grid */}
+      {/* ================= CAR GRID ================= */}
+
       <div
         style={{
           display: "grid",
           gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))",
           gap: "25px",
+          maxWidth: "1400px",
+          margin: "0 auto",
         }}
       >
         {cars.map((car) => (

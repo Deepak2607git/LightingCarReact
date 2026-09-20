@@ -1,38 +1,35 @@
 const API_URL = import.meta.env.VITE_API_URL;
 
-async function request(path, body) {
-  const response = await fetch(`${API_URL}${path}`, {
+export async function login(email, password) {
+  const response = await fetch(`${API_URL}/api/Auth/login`, {
     method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(body)
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      email,
+      password,
+    }),
   });
 
   const data = await response.json();
 
   if (!response.ok) {
-    throw new Error(data.message || "Request failed.");
+    throw new Error(
+      data.message || data.title || "Invalid email or password"
+    );
   }
 
+  // If backend returns a token
+  if (data.token) {
+    localStorage.setItem("token", data.token);
+  }
+
+  // If your API returns { user: {...}, token: "..." }
+  if (data.user) {
+    return data.user;
+  }
+
+  // If your API directly returns the user
   return data;
-}
-
-export async function login(email, password) {
-  const data = await request("/api/Auth/login", { email, password });
-  localStorage.setItem("token", data.token);
-  localStorage.setItem("user", JSON.stringify(data));
-  return data;
-}
-
-export async function register(fullName, email, password) {
-  return request("/api/Auth/register", { fullName, email, password });
-}
-
-export function logout() {
-  localStorage.removeItem("token");
-  localStorage.removeItem("user");
-}
-
-export function getCurrentUser() {
-  const value = localStorage.getItem("user");
-  return value ? JSON.parse(value) : null;
 }

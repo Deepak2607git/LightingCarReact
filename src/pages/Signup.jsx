@@ -1,28 +1,47 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { register } from "../services/authService";
+
+const API_URL = import.meta.env.VITE_API_URL;
 
 export default function Signup() {
   const navigate = useNavigate();
-  const [fullName, setFullName] = useState("");
+
+  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
+
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
   async function submit(event) {
     event.preventDefault();
+
     setError("");
-
-    if (password !== confirmPassword) {
-      setError("Passwords do not match.");
-      return;
-    }
-
     setLoading(true);
+
     try {
-      await register(fullName, email, password);
+      const response = await fetch(`${API_URL}/api/Auth/register`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          name,
+          email,
+          password,
+        }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(
+          data.message || data.title || "Registration failed"
+        );
+      }
+
+      alert("Registration successful. Please login.");
+
       navigate("/login");
     } catch (err) {
       setError(err.message);
@@ -32,31 +51,187 @@ export default function Signup() {
   }
 
   return (
-    <main className="auth-page">
-      <section className="auth-card">
-        <div className="brand">🚗 Lightning Cars</div>
-        <h1>Create account</h1>
-        <p className="muted">Register as a customer</p>
+    <main
+      style={{
+        minHeight: "100vh",
+        backgroundColor: "#f5f6f8",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        padding: "20px",
+      }}
+    >
+      <section
+        style={{
+          width: "100%",
+          maxWidth: "420px",
+          backgroundColor: "#ffffff",
+          borderRadius: "14px",
+          padding: "35px",
+          boxSizing: "border-box",
+          boxShadow: "0 5px 25px rgba(0,0,0,0.08)",
+        }}
+      >
+        <div
+          style={{
+            textAlign: "center",
+            fontSize: "25px",
+            fontWeight: "700",
+            marginBottom: "10px",
+          }}
+        >
+          🚗 Lightning Cars
+        </div>
 
-        {error && <div className="error">{error}</div>}
+        <h1
+          style={{
+            textAlign: "center",
+            margin: "10px 0 5px",
+          }}
+        >
+          Create Account
+        </h1>
+
+        <p
+          style={{
+            textAlign: "center",
+            color: "#666666",
+            marginBottom: "25px",
+          }}
+        >
+          Create your Lightning Cars account
+        </p>
+
+        {error && (
+          <div
+            style={{
+              backgroundColor: "#ffecec",
+              color: "#d00000",
+              padding: "10px",
+              borderRadius: "6px",
+              marginBottom: "15px",
+            }}
+          >
+            {error}
+          </div>
+        )}
 
         <form onSubmit={submit}>
-          <label>Full name</label>
-          <input value={fullName} onChange={e => setFullName(e.target.value)} required />
+          <label
+            style={{
+              display: "block",
+              marginBottom: "7px",
+              fontWeight: "500",
+            }}
+          >
+            Name
+          </label>
 
-          <label>Email</label>
-          <input type="email" value={email} onChange={e => setEmail(e.target.value)} required />
+          <input
+            type="text"
+            value={name}
+            onChange={(event) => setName(event.target.value)}
+            placeholder="Enter your name"
+            required
+            style={{
+              width: "100%",
+              padding: "12px",
+              boxSizing: "border-box",
+              border: "1px solid #ddd",
+              borderRadius: "7px",
+              marginBottom: "18px",
+            }}
+          />
 
-          <label>Password</label>
-          <input type="password" minLength="6" value={password} onChange={e => setPassword(e.target.value)} required />
+          <label
+            style={{
+              display: "block",
+              marginBottom: "7px",
+              fontWeight: "500",
+            }}
+          >
+            Email
+          </label>
 
-          <label>Confirm password</label>
-          <input type="password" value={confirmPassword} onChange={e => setConfirmPassword(e.target.value)} required />
+          <input
+            type="email"
+            value={email}
+            onChange={(event) => setEmail(event.target.value)}
+            placeholder="Enter your email"
+            required
+            style={{
+              width: "100%",
+              padding: "12px",
+              boxSizing: "border-box",
+              border: "1px solid #ddd",
+              borderRadius: "7px",
+              marginBottom: "18px",
+            }}
+          />
 
-          <button disabled={loading}>{loading ? "Creating..." : "Create account"}</button>
+          <label
+            style={{
+              display: "block",
+              marginBottom: "7px",
+              fontWeight: "500",
+            }}
+          >
+            Password
+          </label>
+
+          <input
+            type="password"
+            value={password}
+            onChange={(event) => setPassword(event.target.value)}
+            placeholder="Create a password"
+            required
+            style={{
+              width: "100%",
+              padding: "12px",
+              boxSizing: "border-box",
+              border: "1px solid #ddd",
+              borderRadius: "7px",
+              marginBottom: "20px",
+            }}
+          />
+
+          <button
+            type="submit"
+            disabled={loading}
+            style={{
+              width: "100%",
+              padding: "13px",
+              border: "none",
+              borderRadius: "7px",
+              backgroundColor: "#111111",
+              color: "#ffffff",
+              fontWeight: "600",
+              cursor: loading ? "not-allowed" : "pointer",
+            }}
+          >
+            {loading ? "Creating Account..." : "Sign Up"}
+          </button>
         </form>
 
-        <p className="switch">Already have an account? <Link to="/login">Login</Link></p>
+        <p
+          style={{
+            textAlign: "center",
+            marginTop: "22px",
+            color: "#666666",
+          }}
+        >
+          Already have an account?{" "}
+          <Link
+            to="/login"
+            style={{
+              color: "#111111",
+              fontWeight: "600",
+              textDecoration: "none",
+            }}
+          >
+            Login
+          </Link>
+        </p>
       </section>
     </main>
   );
