@@ -16,7 +16,7 @@ export default function Login() {
 
     try {
       const user = await login(email, password);
-      navigate(user.role === "ADMIN" ? "/dashboard?role=admin" : "/dashboard");
+         navigate("/cars");
     } catch (err) {
       setError(err.message);
     } finally {
