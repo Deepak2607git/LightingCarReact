@@ -1,0 +1,15 @@
+* { box-sizing: border-box; }
+body { margin: 0; font-family: Arial, sans-serif; background: #f2f5f9; color: #172033; }
+.auth-page, .dashboard { min-height: 100vh; display: grid; place-items: center; padding: 24px; }
+.auth-card, .dashboard-card { width: 100%; max-width: 430px; background: white; padding: 36px; border-radius: 18px; box-shadow: 0 12px 35px rgba(0,0,0,.08); }
+.brand { font-size: 24px; font-weight: 800; margin-bottom: 24px; }
+h1 { margin: 0 0 8px; }
+.muted { color: #6b7280; margin-top: 0; margin-bottom: 26px; }
+form { display: grid; gap: 10px; }
+label { font-weight: 600; margin-top: 8px; }
+input { width: 100%; padding: 13px; border: 1px solid #ccd3dd; border-radius: 9px; font-size: 15px; }
+button { border: 0; border-radius: 9px; padding: 13px 16px; background: #1769e0; color: white; font-size: 15px; font-weight: 700; cursor: pointer; margin-top: 14px; }
+button:disabled { opacity: .65; cursor: not-allowed; }
+.switch { text-align: center; margin-top: 24px; }
+a { color: #1769e0; font-weight: 700; text-decoration: none; }
+.error { background: #fff0f0; color: #b42318; padding: 12px; border-radius: 8px; margin-bottom: 14px; }
