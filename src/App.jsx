@@ -3,6 +3,8 @@ import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import Dashboard from "./pages/Dashboard";
 import Cars from "./pages/Cars";
+import CarsInside from "./pages/Cars Inside";
+import Booking from "./pages/Booking";
 
 function App() {
   return (
@@ -12,6 +14,8 @@ function App() {
       <Route path="/signup" element={<Signup />} />
       <Route path="/dashboard" element={<Dashboard />} />
       <Route path="/cars" element={<Cars />} />
+      <Route path="/carsMenu" element={<CarsInside />} />
+       <Route path="/booking" element={<Booking />} />
       <Route path="*" element={<Navigate to="/login" replace />} />
     </Routes>
   );

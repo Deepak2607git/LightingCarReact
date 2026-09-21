@@ -96,7 +96,18 @@ function CarCard({ car }) {
   }
 
   function bookCar() {
-    navigate("/login");
+    const token = localStorage.getItem("token");
+
+    if (!token) {
+      navigate("/login");
+      return;
+    }
+
+    navigate("/booking", {
+      state: {
+        car: car,
+      },
+    });
   }
 
   return (
@@ -142,28 +153,20 @@ function CarCard({ car }) {
             left: "12px",
             top: "50%",
             transform: "translateY(-50%)",
-
             width: "38px",
             height: "38px",
-
             padding: 0,
             margin: 0,
-
             border: "none",
             borderRadius: "50%",
-
             backgroundColor: "rgba(0,0,0,0.55)",
             color: "#ffffff",
-
             fontSize: "27px",
             lineHeight: "1",
-
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
-
             cursor: "pointer",
-
             zIndex: 5,
           }}
         >
@@ -181,28 +184,20 @@ function CarCard({ car }) {
             right: "12px",
             top: "50%",
             transform: "translateY(-50%)",
-
             width: "38px",
             height: "38px",
-
             padding: 0,
             margin: 0,
-
             border: "none",
             borderRadius: "50%",
-
             backgroundColor: "rgba(0,0,0,0.55)",
             color: "#ffffff",
-
             fontSize: "27px",
             lineHeight: "1",
-
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
-
             cursor: "pointer",
-
             zIndex: 5,
           }}
         >
@@ -217,10 +212,8 @@ function CarCard({ car }) {
             bottom: "12px",
             left: "50%",
             transform: "translateX(-50%)",
-
             display: "flex",
             gap: "7px",
-
             zIndex: 5,
           }}
         >
@@ -233,20 +226,15 @@ function CarCard({ car }) {
               style={{
                 width: currentImage === index ? "20px" : "8px",
                 height: "8px",
-
                 padding: 0,
                 margin: 0,
-
                 border: "none",
                 borderRadius: "10px",
-
                 backgroundColor:
                   currentImage === index
                     ? "#ffffff"
                     : "rgba(255,255,255,0.6)",
-
                 cursor: "pointer",
-
                 transition: "all 0.2s ease",
               }}
             />
@@ -312,6 +300,25 @@ function CarCard({ car }) {
               / day
             </span>
           </div>
+
+          {/* Book */}
+
+          <button
+            type="button"
+            onClick={bookCar}
+            style={{
+              padding: "11px 18px",
+              border: "none",
+              borderRadius: "7px",
+              backgroundColor: "#111111",
+              color: "#ffffff",
+              cursor: "pointer",
+              fontSize: "14px",
+              fontWeight: "600",
+            }}
+          >
+            Book Now
+          </button>
         </div>
       </div>
     </div>
@@ -319,12 +326,6 @@ function CarCard({ car }) {
 }
 
 function Cars() {
-  const navigate = useNavigate();
-
-  function goToLogin() {
-    navigate("/login");
-  }
-
   return (
     <div
       style={{
@@ -367,29 +368,6 @@ function Cars() {
             Find your perfect rental car
           </p>
         </div>
-
-        {/* Login */}
-
-        <button
-          type="button"
-          onClick={goToLogin}
-          style={{
-            padding: "11px 24px",
-
-            border: "none",
-            borderRadius: "7px",
-
-            backgroundColor: "#111111",
-            color: "#ffffff",
-
-            fontSize: "15px",
-            fontWeight: "600",
-
-            cursor: "pointer",
-          }}
-        >
-          Login
-        </button>
       </header>
 
       {/* ================= PAGE TITLE ================= */}
